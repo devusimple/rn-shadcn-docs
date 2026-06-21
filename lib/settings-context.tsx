@@ -15,10 +15,8 @@ const SettingsContext = createContext<SettingsContextType | null>(null);
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>({ codeWrap: false });
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const stored = localStorage.getItem('ew-settings');
     if (stored) {
       try {
@@ -35,10 +33,6 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('ew-settings', JSON.stringify({ codeWrap }));
     document.documentElement.dataset.codeWrap = String(codeWrap);
   };
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <SettingsContext.Provider value={{ settings, setCodeWrap }}>
